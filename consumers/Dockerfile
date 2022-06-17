@@ -17,7 +17,7 @@ ENV UWSGI_PROCESSES 16
 
 # CRON:
 USER root
-ARG INSTALL_CRON=false
+ARG INSTALL_CRON=true
 RUN if [ ${INSTALL_CRON} = true ]; then \
     apt-get update -yqq ; \
     apt-get -y install cron \
@@ -25,7 +25,7 @@ RUN if [ ${INSTALL_CRON} = true ]; then \
 
 # SUPERVISOR:
 USER root
-ARG INSTALL_SUPERVISOR=false
+ARG INSTALL_SUPERVISOR=true
 RUN if [ ${INSTALL_SUPERVISOR} = true ]; then \
     apt-get update -yqq ; \
     apt-get -y install supervisor \
@@ -33,7 +33,7 @@ RUN if [ ${INSTALL_SUPERVISOR} = true ]; then \
 
 # NPM:
 USER root
-ARG INSTALL_NPM=false
+ARG INSTALL_NPM=true
 ARG NODE_VERSION
 RUN if [ ${INSTALL_NPM} = true ]; then \
     apt-get update -yqq ; \
@@ -45,27 +45,27 @@ RUN if [ ${INSTALL_NPM} = true ]; then \
 
 # GIT:
 USER root
-ARG INSTALL_GIT=false
+ARG INSTALL_GIT=true
 RUN if [ ${INSTALL_GIT} = true ]; then \
     apt-get -y install git \
     ;fi
 
 # ZIP:
 USER root
-ARG INSTALL_ZIP=false
+ARG INSTALL_ZIP=true
 RUN if [ ${INSTALL_ZIP} = true ]; then \
     apt-get -y install zip unzip \
     ;fi
 
 # Image optimizers:
 USER root
-ARG INSTALL_IMAGE_OPTIMIZERS=false
+ARG INSTALL_IMAGE_OPTIMIZERS=true
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y jpegoptim optipng pngquant gifsicle \
     ;fi
 
 # pgsql client
-ARG INSTALL_PG_CLIENT=false
+ARG INSTALL_PG_CLIENT=true
 
 RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     # Create folders if not exists (https://github.com/tianon/docker-brew-debian/issues/65)
@@ -74,6 +74,11 @@ RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
     # Install the pgsql client
     apt-get install -y postgresql-client \
     ;fi
+
+# fix error 
+RUN mkdir -p /var/www/todo      && \ 
+    mkdir -p /var/www/todo/logs && \
+    service supervisor restart
 
 COPY ./requirements.txt /opt/
 RUN pip install -r /opt/requirements.txt
