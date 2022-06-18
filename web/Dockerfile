@@ -1,4 +1,4 @@
-FROM python:3.8-buster
+FROM python:2.7-stretch
 USER root
 # uWSGI:
 RUN pip install uwsgi
