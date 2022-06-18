@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/
 ARG CHANGE_SOURCE=true
