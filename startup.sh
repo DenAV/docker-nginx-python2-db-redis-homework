@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build docker image
-docker-compose up -d --build
+# docker-compose up -d --build
 # Run all the services except the consumers, which will be run after all the apps are prepaired
 docker-compose up -d --scale consumers=0
 
