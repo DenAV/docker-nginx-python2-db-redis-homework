@@ -1,10 +1,5 @@
 FROM python:2.7-stretch
 
-USER root
-RUN apt-get update -yqq && \
-    apt-get install apt-utils -y && \ 
-    python -m pip install --upgrade pip
-
 # uWSGI:
 USER root
 RUN pip install uwsgi
